@@ -1,5 +1,5 @@
-# Etapa de compilación
-FROM golang:1.22-alpine AS builder
+# Etapa de compilación - Actualizado a Go 1.24
+FROM golang:1.24-alpine AS builder
 WORKDIR /app
 RUN go mod init porton-web && go get github.com/eclipse/paho.mqtt.golang
 COPY main.go .
