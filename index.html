@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Portón Cereva</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #121212; color: white; }
+        .container { text-align: center; padding: 20px; background: #1e1e1e; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); width: 90%; max-width: 350px; }
+        input { width: 80%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid #333; background: #2a2a2a; color: white; text-align: center; font-size: 16px; }
+        button { width: 85%; padding: 15px; background-color: #007bff; color: white; border: none; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+        button:hover { background-color: #0056b3; }
+        #status { margin-top: 15px; font-size: 14px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Control de Acceso</h2>
+        <input type="password" id="password" placeholder="Introduce la clave">
+        <br>
+        <button onclick="abrirPorton()">ABRIR PORTÓN</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        async function abrirPorton() {
+            const pass = document.getElementById('password').value;
+            const statusDiv = document.getElementById('status');
+            if(!pass) { statusDiv.innerText = "Escribe la contraseña"; statusDiv.style.color = "red"; return; }
+            
+            statusDiv.innerText = "Enviando comando...";
+            statusDiv.style.color = "orange";
+
+            const formData = new FormData();
+            formData.append('password', pass);
+
+            try {
+                const response = await fetch('/api/abrir', { method: 'POST', body: formData });
+                const result = await response.text();
+                statusDiv.innerText = result;
+                statusDiv.style.color = response.ok ? "green" : "red";
+            } catch (error) {
+                statusDiv.innerText = "Error de red al conectar con el servidor";
+                statusDiv.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>

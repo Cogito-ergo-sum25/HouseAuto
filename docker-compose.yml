@@ -11,7 +11,7 @@ services:
       - ./mosquitto/config:/mosquitto/config
 
   porton-web:
-    build: ./porton-web
+    build: .
     container_name: porton_web
     restart: always
     ports:
