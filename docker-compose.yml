@@ -15,7 +15,7 @@ services:
     container_name: porton_web
     restart: always
     ports:
-      - "8080:8080" # El puerto HTTP que mapearás seguro en Cloudflare Zero Trust
+      - "8085:8080"
     env_file:
       - .env        # Inyecta las variables del archivo local al contenedor de Go
     depends_on:
