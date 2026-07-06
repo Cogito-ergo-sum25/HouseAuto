@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: always
+    ports:
+      - "1883:1883" # Abierto para que el ESP32 le pegue desde tu red local
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+
+  porton-web:
+    build: ./porton-web
+    container_name: porton_web
+    restart: always
+    ports:
+      - "8080:8080" # El puerto HTTP que mapearás seguro en Cloudflare Zero Trust
+    env_file:
+      - .env        # Inyecta las variables del archivo local al contenedor de Go
+    depends_on:
+      - mosquitto
