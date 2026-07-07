@@ -88,6 +88,8 @@ function conectarLogsEnVivo() {
             const data = JSON.parse(event.data);
             if (data.type === 'log') {
                 appendLog(data.message);
+            } else if (data.type === 'init_status') {
+                updateBadge(data.value);
             } else if (data.type === 'status') {
                 updateBadge(data.value);
                 if (data.value === 'online') {

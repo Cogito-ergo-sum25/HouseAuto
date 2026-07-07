@@ -67,13 +67,11 @@ func (b *Broker) Handler(w http.ResponseWriter, r *http.Request) {
 		close(messageChan)
 	}()
 
-	fmt.Fprintf(w, "data: {\"type\":\"log\",\"message\":\"[Web] Conectado a la consola. Esperando eventos...\"}\n\n")
-	
-	// Enviar el último estado conocido inmediatamente al nuevo cliente
+	// Enviar el último estado conocido inmediatamente al nuevo cliente sin generar log extra
 	b.statusMu.RLock()
 	currentStatus := b.lastStatus
 	b.statusMu.RUnlock()
-	fmt.Fprintf(w, "data: {\"type\":\"status\",\"value\":\"%s\"}\n\n", currentStatus)
+	fmt.Fprintf(w, "data: {\"type\":\"init_status\",\"value\":\"%s\"}\n\n", currentStatus)
 
 	flusher.Flush()
 

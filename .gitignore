@@ -2,4 +2,4 @@
 mosquitto/data/
 mosquitto/log/
 firmware/secrets.h
-Dockerfile.dev
+tmp/

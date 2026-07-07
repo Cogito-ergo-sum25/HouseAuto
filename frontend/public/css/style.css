@@ -140,14 +140,15 @@ button:disabled {
 .dot.green { background-color: #27c93f; }
 
 .terminal-output {
-    height: 180px;
+    flex-grow: 1;
+    height: auto;
     padding: 15px;
     overflow-y: auto;
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--terminal-text);
     text-align: left;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .terminal-output div {

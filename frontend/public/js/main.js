@@ -46,7 +46,7 @@ function conectarStatusEnVivo() {
     evtSource.onmessage = function(event) {
         try {
             const data = JSON.parse(event.data);
-            if (data.type === 'status') {
+            if (data.type === 'status' || data.type === 'init_status') {
                 const badge = document.getElementById('espStatusIndicator');
                 if (badge) {
                     if (data.value === 'online') {
