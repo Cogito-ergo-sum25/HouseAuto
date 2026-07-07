@@ -2,12 +2,11 @@
 FROM golang:1.24-alpine AS builder
 WORKDIR /app
 
-# Inicializar y descargar dependencias
-COPY go.mod ./
-RUN go mod tidy
-
-# Copiar el código fuente
+# Copiar todo el código fuente
 COPY . .
+
+# Generar go.sum y descargar dependencias basándose en el código copiado
+RUN go mod tidy
 
 # Compilar desde la nueva ubicación
 RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/server
