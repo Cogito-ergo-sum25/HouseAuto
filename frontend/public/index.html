@@ -14,9 +14,11 @@
             <input type="password" id="password" placeholder="Introduce tu clave de acceso">
             <button id="abrirBtn" onclick="abrirPorton()">ABRIR PORTÓN</button>
             <div id="status"></div>
+            
+            <button id="toggleTerminalBtn" onclick="toggleTerminal()" style="margin-top: 20px; background: transparent; border: 1px solid var(--border); color: #94a3b8; font-size: 13px; padding: 10px; width: 100%; box-shadow: none;">Mostrar Consola Serial</button>
         </div>
 
-        <div class="terminal-container">
+        <div class="terminal-container" id="terminalContainer" style="display: none;">
             <div class="terminal-header" style="display: flex;">
                 <span class="dot red"></span>
                 <span class="dot yellow"></span>
@@ -31,6 +33,6 @@
     </div>
 
     <!-- Referencia al archivo JS separado con versionado para evitar caché -->
-    <script src="/js/main.js?v=3"></script>
+    <script src="/js/main.js?v=4"></script>
 </body>
 </html>

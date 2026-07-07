@@ -39,6 +39,19 @@ async function abrirPorton() {
     }
 }
 
+function toggleTerminal() {
+    const term = document.getElementById('terminalContainer');
+    const btn = document.getElementById('toggleTerminalBtn');
+    if (term.style.display === 'none') {
+        term.style.display = 'flex';
+        btn.innerText = 'Ocultar Consola Serial';
+        term.querySelector('.terminal-output').scrollTop = term.querySelector('.terminal-output').scrollHeight;
+    } else {
+        term.style.display = 'none';
+        btn.innerText = 'Mostrar Consola Serial';
+    }
+}
+
 // -- Lógica de Consola (Server-Sent Events) --
 const terminal = document.getElementById('terminalOutput');
 

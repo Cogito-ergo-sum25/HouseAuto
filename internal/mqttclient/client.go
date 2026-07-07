@@ -27,8 +27,7 @@ func NewClient(cfg *config.Config, sseBroker *sse.Broker) *Client {
 		}
 
 		if token := c.Subscribe("casa/porton/status", 0, func(c mqtt.Client, m mqtt.Message) {
-			statusMsg := fmt.Sprintf(`{"type":"status","value":"%s"}`, string(m.Payload()))
-			sseBroker.Broadcast(statusMsg)
+			sseBroker.UpdateStatus(string(m.Payload()))
 		}); token.Wait() && token.Error() != nil {
 			log.Printf("[-] Error al suscribirse a status: %v", token.Error())
 		}

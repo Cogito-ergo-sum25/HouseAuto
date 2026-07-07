@@ -7,13 +7,16 @@ import (
 )
 
 type Broker struct {
-	clients   map[chan string]bool
-	clientsMu sync.Mutex
+	clients    map[chan string]bool
+	clientsMu  sync.Mutex
+	lastStatus string
+	statusMu   sync.RWMutex
 }
 
 func NewBroker() *Broker {
 	return &Broker{
-		clients: make(map[chan string]bool),
+		clients:    make(map[chan string]bool),
+		lastStatus: "offline", // estado por defecto hasta recibir señal
 	}
 }
 
@@ -27,6 +30,16 @@ func (b *Broker) Broadcast(msg string) {
 		default:
 		}
 	}
+}
+
+// UpdateStatus guarda el estado actual y lo envía a los clientes
+func (b *Broker) UpdateStatus(status string) {
+	b.statusMu.Lock()
+	b.lastStatus = status
+	b.statusMu.Unlock()
+
+	msg := fmt.Sprintf(`{"type":"status","value":"%s"}`, status)
+	b.Broadcast(msg)
 }
 
 // Handler para registrar y servir a los clientes SSE
@@ -55,6 +68,13 @@ func (b *Broker) Handler(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	fmt.Fprintf(w, "data: {\"type\":\"log\",\"message\":\"[Web] Conectado a la consola. Esperando eventos...\"}\n\n")
+	
+	// Enviar el último estado conocido inmediatamente al nuevo cliente
+	b.statusMu.RLock()
+	currentStatus := b.lastStatus
+	b.statusMu.RUnlock()
+	fmt.Fprintf(w, "data: {\"type\":\"status\",\"value\":\"%s\"}\n\n", currentStatus)
+
 	flusher.Flush()
 
 	for {
