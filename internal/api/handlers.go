@@ -3,7 +3,11 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"net/http"
+	"path/filepath"
+	"strings"
+	"time"
 
 	"houseauto/internal/config"
 	"houseauto/internal/database"
@@ -12,10 +16,33 @@ import (
 )
 
 func RegisterHandlers(cfg *config.Config, mqttClient *mqttclient.Client, sseBroker *sse.Broker, db *database.DB) {
-	// Servir archivos estáticos del frontend sin caché (ideal para desarrollo con air)
+	// Generar un hash único de versión cada vez que el servidor arranca
+	version := fmt.Sprintf("%d", time.Now().Unix())
+
 	fs := http.FileServer(http.Dir("./frontend/public"))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+		
+		path := r.URL.Path
+		if path == "/" {
+			path = "/index.html"
+		}
+		
+		// Si es HTML, inyectar el cache buster dinámicamente
+		if strings.HasSuffix(path, ".html") {
+			fullPath := filepath.Join("frontend", "public", path)
+			tmpl, err := template.ParseFiles(fullPath)
+			if err != nil {
+				// Dejar que fs maneje el 404
+				fs.ServeHTTP(w, r)
+				return
+			}
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			tmpl.Execute(w, map[string]string{"Version": version})
+			return
+		}
+
+		// Servir CSS, JS e imágenes estáticamente
 		fs.ServeHTTP(w, r)
 	})
 
