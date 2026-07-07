@@ -86,9 +86,11 @@ function conectarLogs() {
                     if (data.value === 'online') {
                         badge.className = 'status-badge online';
                         badge.innerText = 'ONLINE';
+                        appendLog("[+] ESP32 Conectado (ONLINE)");
                     } else {
                         badge.className = 'status-badge offline';
                         badge.innerText = 'OFFLINE';
+                        appendLog("[-] ESP32 Desconectado (OFFLINE)");
                     }
                 }
             }
