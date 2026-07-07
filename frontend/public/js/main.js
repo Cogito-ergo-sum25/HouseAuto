@@ -76,7 +76,25 @@ function conectarLogs() {
     const evtSource = new EventSource('/api/logs');
 
     evtSource.onmessage = function(event) {
-        appendLog(event.data);
+        try {
+            const data = JSON.parse(event.data);
+            if (data.type === 'log') {
+                appendLog(data.message);
+            } else if (data.type === 'status') {
+                const badge = document.getElementById('espStatusIndicator');
+                if (badge) {
+                    if (data.value === 'online') {
+                        badge.className = 'status-badge online';
+                        badge.innerText = 'ONLINE';
+                    } else {
+                        badge.className = 'status-badge offline';
+                        badge.innerText = 'OFFLINE';
+                    }
+                }
+            }
+        } catch (e) {
+            appendLog(event.data); // Fallback
+        }
     };
 
     evtSource.onerror = function(err) {

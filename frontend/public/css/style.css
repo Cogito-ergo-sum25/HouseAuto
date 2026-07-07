@@ -160,3 +160,15 @@ button:disabled {
 .terminal-output::-webkit-scrollbar-track { background: transparent; }
 .terminal-output::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
 .terminal-output::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* Status Badge */
+.status-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+.status-badge.online { background: rgba(52, 211, 153, 0.2); color: #34d399; }
+.status-badge.offline { background: rgba(248, 113, 113, 0.2); color: #f87171; }

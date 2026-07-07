@@ -54,7 +54,7 @@ func (b *Broker) Handler(w http.ResponseWriter, r *http.Request) {
 		close(messageChan)
 	}()
 
-	fmt.Fprintf(w, "data: [Web] Conectado a la consola. Esperando eventos...\n\n")
+	fmt.Fprintf(w, "data: {\"type\":\"log\",\"message\":\"[Web] Conectado a la consola. Esperando eventos...\"}\n\n")
 	flusher.Flush()
 
 	for {

@@ -1,6 +1,7 @@
 package mqttclient
 
 import (
+	"fmt"
 	"log"
 
 	"houseauto/internal/config"
@@ -17,11 +18,19 @@ func NewClient(cfg *config.Config, sseBroker *sse.Broker) *Client {
 	opts := mqtt.NewClientOptions().AddBroker(cfg.MQTTBroker).SetClientID("porton_web_backend_persistent")
 
 	opts.OnConnect = func(c mqtt.Client) {
-		log.Println("[+] Conectado al broker MQTT. Suscribiendo a logs...")
+		log.Println("[+] Conectado al broker MQTT. Suscribiendo a logs y status...")
 		if token := c.Subscribe("casa/porton/logs", 0, func(c mqtt.Client, m mqtt.Message) {
-			sseBroker.Broadcast(string(m.Payload()))
+			logMsg := fmt.Sprintf(`{"type":"log","message":"%s"}`, string(m.Payload()))
+			sseBroker.Broadcast(logMsg)
 		}); token.Wait() && token.Error() != nil {
 			log.Printf("[-] Error al suscribirse a logs: %v", token.Error())
+		}
+
+		if token := c.Subscribe("casa/porton/status", 0, func(c mqtt.Client, m mqtt.Message) {
+			statusMsg := fmt.Sprintf(`{"type":"status","value":"%s"}`, string(m.Payload()))
+			sseBroker.Broadcast(statusMsg)
+		}); token.Wait() && token.Error() != nil {
+			log.Printf("[-] Error al suscribirse a status: %v", token.Error())
 		}
 	}
 

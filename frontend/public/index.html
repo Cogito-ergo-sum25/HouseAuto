@@ -17,11 +17,12 @@
         </div>
 
         <div class="terminal-container">
-            <div class="terminal-header">
+            <div class="terminal-header" style="display: flex;">
                 <span class="dot red"></span>
                 <span class="dot yellow"></span>
                 <span class="dot green"></span>
-                <span style="margin-left: 10px; font-weight: 500;">ESP32 Serial Monitor</span>
+                <span style="margin-left: 10px; font-weight: 500; flex-grow: 1;">ESP32 Serial Monitor</span>
+                <span id="espStatusIndicator" class="status-badge offline">OFFLINE</span>
             </div>
             <div class="terminal-output" id="terminalOutput">
                 <!-- Los logs aparecerán aquí -->

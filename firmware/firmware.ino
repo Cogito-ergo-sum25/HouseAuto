@@ -71,9 +71,11 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Conectando al Mosquitto Local...");
     
-    // ID único para el actuador
-    if (client.connect("ESP32C3_Porton_Actuator")) {
+    // ID único para el actuador, LWT (Last Will and Testament)
+    if (client.connect("ESP32C3_Porton_Actuator", "casa/porton/status", 1, true, "offline")) {
       logMessage("¡Conectado a MQTT con éxito!");
+      // Publicar estado online retenido
+      client.publish("casa/porton/status", "online", true);
       client.subscribe("casa/porton/abrir");
     } else {
       Serial.print(" falló, rc=");
