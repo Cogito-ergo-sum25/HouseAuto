@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Portón Cereva</title>
+    <!-- Referencia al archivo CSS separado -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="container">
+            <h2>Acceso Seguro</h2>
+            <input type="password" id="password" placeholder="Introduce tu clave de acceso">
+            <button id="abrirBtn" onclick="abrirPorton()">ABRIR PORTÓN</button>
+            <div id="status"></div>
+        </div>
+
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span style="margin-left: 10px; font-weight: 500;">ESP32 Serial Monitor</span>
+            </div>
+            <div class="terminal-output" id="terminalOutput">
+                <!-- Los logs aparecerán aquí -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Referencia al archivo JS separado -->
+    <script src="/js/main.js"></script>
+</body>
+</html>
