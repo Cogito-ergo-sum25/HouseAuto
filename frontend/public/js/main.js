@@ -74,5 +74,39 @@ function conectarStatusEnVivo() {
     };
 }
 
-// Iniciar la conexión cuando carga el hub
-window.addEventListener('load', conectarStatusEnVivo);
+// -- Lógica del Reloj Hub (CDMX GMT-6) --
+function actualizarReloj() {
+    const timeDiv = document.getElementById('hub-time');
+    const dateDiv = document.getElementById('hub-date');
+    if (!timeDiv || !dateDiv) return;
+
+    // Configurar para usar siempre el timezone de America/Mexico_City
+    const optionsTime = { 
+        timeZone: 'America/Mexico_City', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: false
+    };
+    
+    const optionsDate = { 
+        timeZone: 'America/Mexico_City',
+        weekday: 'long', 
+        day: 'numeric', 
+        month: 'long' 
+    };
+
+    const formatterTime = new Intl.DateTimeFormat('es-MX', optionsTime);
+    const formatterDate = new Intl.DateTimeFormat('es-MX', optionsDate);
+    
+    const now = new Date();
+    timeDiv.innerText = formatterTime.format(now);
+    dateDiv.innerText = formatterDate.format(now);
+}
+
+// Iniciar la conexión y el reloj cuando carga el hub
+window.addEventListener('load', () => {
+    conectarStatusEnVivo();
+    actualizarReloj();
+    setInterval(actualizarReloj, 1000);
+});

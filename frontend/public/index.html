@@ -9,19 +9,37 @@
 </head>
 <body>
     <div class="main-wrapper">
-        <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="margin: 0;">Acceso Seguro</h2>
-                <span id="espStatusIndicator" class="status-badge offline">OFFLINE</span>
+        <!-- Dashboard Hub Superior -->
+        <div class="hub-dashboard">
+            <div class="hub-header">
+                <div class="hub-time-container">
+                    <div id="hub-time" class="hub-time">--:--:--</div>
+                    <div id="hub-date" class="hub-date">Cargando...</div>
+                </div>
+                <div class="hub-status-container">
+                    <span class="hub-label">ESTADO DE CONEXIÓN</span>
+                    <span id="espStatusIndicator" class="status-badge offline">OFFLINE</span>
+                </div>
             </div>
+        </div>
+
+        <!-- Contenedor de Acceso Seguro -->
+        <div class="container">
+            <h2 style="margin-bottom: 20px;">Acceso Seguro</h2>
             
             <input type="password" id="password" placeholder="Introduce tu clave de acceso">
             <button id="abrirBtn" onclick="abrirPorton()">ABRIR PORTÓN</button>
             <div id="status"></div>
-            
-            <a href="/console.html" style="display: block; text-align: center; margin-top: 20px; background: transparent; border: 1px solid var(--border); color: #94a3b8; font-size: 13px; padding: 10px; text-decoration: none; border-radius: 8px;">Ir a la Consola Serial</a>
         </div>
     </div>
+
+    <!-- Menú Inferior Flotante (Pill) -->
+    <nav class="bottom-pill-menu">
+        <a href="/" class="pill-btn active">INICIO</a>
+        <a href="/console.html" class="pill-btn">CONSOLA</a>
+        <a href="#" class="pill-btn" onclick="alert('Próximamente')">AJUSTES</a>
+        <a href="#" class="pill-btn" onclick="alert('Próximamente')">PERFIL</a>
+    </nav>
 
     <!-- Referencia al archivo JS separado con versionado para evitar caché -->
     <script src="/js/main.js?v=4"></script>

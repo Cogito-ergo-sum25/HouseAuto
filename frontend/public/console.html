@@ -8,10 +8,6 @@
 </head>
 <body>
     <div class="main-wrapper" style="max-width: 800px; padding: 20px;">
-        <div style="margin-bottom: 20px;">
-            <a href="/" style="color: #94a3b8; text-decoration: none;">← Volver al Hub</a>
-        </div>
-        
         <div class="terminal-container" id="terminalContainer" style="display: flex; height: 80vh;">
             <div class="terminal-header" style="display: flex;">
                 <span class="dot red"></span>
@@ -25,6 +21,14 @@
             </div>
         </div>
     </div>
+
+    <!-- Menú Inferior Flotante (Pill) -->
+    <nav class="bottom-pill-menu">
+        <a href="/" class="pill-btn">INICIO</a>
+        <a href="/console.html" class="pill-btn active">CONSOLA</a>
+        <a href="#" class="pill-btn" onclick="alert('Próximamente')">AJUSTES</a>
+        <a href="#" class="pill-btn" onclick="alert('Próximamente')">PERFIL</a>
+    </nav>
 
     <script src="/js/console.js?v=1"></script>
 </body>
