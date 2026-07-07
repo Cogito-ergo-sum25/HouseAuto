@@ -10,25 +10,16 @@
 <body>
     <div class="main-wrapper">
         <div class="container">
-            <h2>Acceso Seguro</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0;">Acceso Seguro</h2>
+                <span id="espStatusIndicator" class="status-badge offline">OFFLINE</span>
+            </div>
+            
             <input type="password" id="password" placeholder="Introduce tu clave de acceso">
             <button id="abrirBtn" onclick="abrirPorton()">ABRIR PORTÓN</button>
             <div id="status"></div>
             
-            <button id="toggleTerminalBtn" onclick="toggleTerminal()" style="margin-top: 20px; background: transparent; border: 1px solid var(--border); color: #94a3b8; font-size: 13px; padding: 10px; width: 100%; box-shadow: none;">Mostrar Consola Serial</button>
-        </div>
-
-        <div class="terminal-container" id="terminalContainer" style="display: none;">
-            <div class="terminal-header" style="display: flex;">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span style="margin-left: 10px; font-weight: 500; flex-grow: 1;">ESP32 Serial Monitor</span>
-                <span id="espStatusIndicator" class="status-badge offline">OFFLINE</span>
-            </div>
-            <div class="terminal-output" id="terminalOutput">
-                <!-- Los logs aparecerán aquí -->
-            </div>
+            <a href="/console.html" style="display: block; text-align: center; margin-top: 20px; background: transparent; border: 1px solid var(--border); color: #94a3b8; font-size: 13px; padding: 10px; text-decoration: none; border-radius: 8px;">Ir a la Consola Serial</a>
         </div>
     </div>
 

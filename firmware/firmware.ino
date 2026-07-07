@@ -8,7 +8,7 @@ const char* ssid = SECRET_SSID;
 const char* password = SECRET_PASS;
 
 // Tu subdominio o IP de internet para el Broker MQTT
-const char* mqtt_server = "192.168.1.210";
+const char* mqtt_server = "192.168.1.170";
 const int mqtt_port = 1883; 
 
 // ... (Todo el resto de tu código de inicialización, setup y loops se queda exactamente igual)

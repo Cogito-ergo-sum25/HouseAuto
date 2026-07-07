@@ -3,6 +3,8 @@ package config
 import (
 	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -11,6 +13,9 @@ type Config struct {
 }
 
 func Load() *Config {
+	// Intentar cargar .env para desarrollo local (si no existe, usa variables inyectadas por Docker)
+	_ = godotenv.Load()
+
 	mqttBroker := os.Getenv("MQTT_BROKER")
 	authPassword := os.Getenv("PORTON_PASSWORD")
 

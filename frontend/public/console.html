@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consola ESP32</title>
+    <link rel="stylesheet" href="/css/style.css?v=2">
+</head>
+<body>
+    <div class="main-wrapper" style="max-width: 800px; padding: 20px;">
+        <div style="margin-bottom: 20px;">
+            <a href="/" style="color: #94a3b8; text-decoration: none;">← Volver al Hub</a>
+        </div>
+        
+        <div class="terminal-container" id="terminalContainer" style="display: flex; height: 80vh;">
+            <div class="terminal-header" style="display: flex;">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span style="margin-left: 10px; font-weight: 500; flex-grow: 1;">ESP32 Serial Monitor (Historial y En Vivo)</span>
+                <span id="espStatusIndicator" class="status-badge offline">OFFLINE</span>
+            </div>
+            <div class="terminal-output" id="terminalOutput">
+                <!-- Los logs aparecerán aquí -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/console.js?v=1"></script>
+</body>
+</html>
