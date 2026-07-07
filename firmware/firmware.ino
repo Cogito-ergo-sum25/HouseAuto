@@ -16,6 +16,13 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 RCSwitch mySwitch = RCSwitch();
 
+void logMessage(String msg) {
+  Serial.println(msg);
+  if (client.connected()) {
+    client.publish("casa/porton/logs", msg.c_str());
+  }
+}
+
 void setup() {
   Serial.begin(115200);
   delay(1000); 
@@ -32,6 +39,7 @@ void setup() {
   mySwitch.setRepeatTransmit(15);
   
   Serial.println("\n[-] Esperando mensajes desde broker.cereva.lat...");
+  // Nota: aquí aún no estamos conectados a MQTT, así que no usamos logMessage
 }
 
 void setup_wifi() {
@@ -53,9 +61,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 
   if (String(topic) == "casa/porton/abrir" && messageTemp == "1") {
-    Serial.println("[+] Comando de apertura recibido desde internet!");
+    logMessage("[+] Comando de apertura recibido desde internet!");
     mySwitch.send(108628005, 28); // Tu código clonado de 28 bits
-    Serial.println("[+] Señal RF 433 MHz enviada al motor SEG.");
+    logMessage("[+] Señal RF 433 MHz enviada al motor SEG.");
   }
 }
 
@@ -65,7 +73,7 @@ void reconnect() {
     
     // ID único para el actuador
     if (client.connect("ESP32C3_Porton_Actuator")) {
-      Serial.println(" ¡Conectado con éxito!");
+      logMessage("¡Conectado a MQTT con éxito!");
       client.subscribe("casa/porton/abrir");
     } else {
       Serial.print(" falló, rc=");

@@ -5,31 +5,208 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso Portón Cereva</title>
     <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #121212; color: white; }
-        .container { text-align: center; padding: 20px; background: #1e1e1e; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); width: 90%; max-width: 350px; }
-        input { width: 80%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid #333; background: #2a2a2a; color: white; text-align: center; font-size: 16px; }
-        button { width: 85%; padding: 15px; background-color: #007bff; color: white; border: none; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
-        button:hover { background-color: #0056b3; }
-        #status { margin-top: 15px; font-size: 14px; font-weight: bold; }
+        :root {
+            --bg-color: #0f172a;
+            --panel-bg: #1e293b;
+            --text-color: #f8fafc;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --border: #334155;
+            --terminal-bg: #050505;
+            --terminal-text: #a7f3d0;
+        }
+
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+        }
+
+        .main-wrapper {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container { 
+            text-align: center; 
+            padding: 40px 30px; 
+            background: var(--panel-bg); 
+            border-radius: 20px; 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5); 
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 15px 0 25px; 
+            border-radius: 12px; 
+            border: 1px solid var(--border); 
+            background: #0f172a; 
+            color: white; 
+            text-align: center; 
+            font-size: 16px; 
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        button { 
+            width: 100%; 
+            padding: 16px; 
+            background-color: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            font-weight: 600; 
+            letter-spacing: 0.5px;
+            cursor: pointer; 
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+        }
+
+        button:hover { 
+            background-color: var(--primary-hover); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background-color: #475569;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.8;
+        }
+
+        #status { 
+            margin-top: 20px; 
+            font-size: 14px; 
+            font-weight: 500; 
+            min-height: 20px;
+            transition: color 0.3s ease;
+        }
+
+        /* Consola de logs estilo macOS */
+        .terminal-container {
+            background: var(--terminal-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: #1e1e1e;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #333;
+            font-size: 12px;
+            color: #888;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .dot.red { background-color: #ff5f56; }
+        .dot.yellow { background-color: #ffbd2e; }
+        .dot.green { background-color: #27c93f; }
+
+        .terminal-output {
+            height: 180px;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 12px;
+            color: var(--terminal-text);
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .terminal-output div {
+            margin-bottom: 4px;
+            word-wrap: break-word;
+        }
+
+        /* Scrollbar styling for terminal */
+        .terminal-output::-webkit-scrollbar { width: 8px; }
+        .terminal-output::-webkit-scrollbar-track { background: transparent; }
+        .terminal-output::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        .terminal-output::-webkit-scrollbar-thumb:hover { background: #555; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Control de Acceso</h2>
-        <input type="password" id="password" placeholder="Introduce la clave">
-        <br>
-        <button onclick="abrirPorton()">ABRIR PORTÓN</button>
-        <div id="status"></div>
+    <div class="main-wrapper">
+        <div class="container">
+            <h2>Acceso Seguro</h2>
+            <input type="password" id="password" placeholder="Introduce tu clave de acceso">
+            <button id="abrirBtn" onclick="abrirPorton()">ABRIR PORTÓN</button>
+            <div id="status"></div>
+        </div>
+
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span style="margin-left: 10px; font-weight: 500;">ESP32 Serial Monitor</span>
+            </div>
+            <div class="terminal-output" id="terminalOutput">
+                <!-- Los logs aparecerán aquí -->
+            </div>
+        </div>
     </div>
 
     <script>
+        // -- Lógica de Apertura del Portón --
         async function abrirPorton() {
             const pass = document.getElementById('password').value;
             const statusDiv = document.getElementById('status');
-            if(!pass) { statusDiv.innerText = "Escribe la contraseña"; statusDiv.style.color = "red"; return; }
+            const btn = document.getElementById('abrirBtn');
+
+            if(!pass) { 
+                statusDiv.innerText = "⚠️ Por favor, escribe la contraseña"; 
+                statusDiv.style.color = "#f87171"; // red
+                return; 
+            }
             
-            statusDiv.innerText = "Enviando comando...";
-            statusDiv.style.color = "orange";
+            statusDiv.innerText = "⏳ Enviando comando...";
+            statusDiv.style.color = "#fbbf24"; // yellow
+            btn.disabled = true;
 
             const formData = new FormData();
             formData.append('password', pass);
@@ -37,13 +214,73 @@
             try {
                 const response = await fetch('/api/abrir', { method: 'POST', body: formData });
                 const result = await response.text();
-                statusDiv.innerText = result;
-                statusDiv.style.color = response.ok ? "green" : "red";
+                
+                if (response.ok) {
+                    statusDiv.innerText = "✅ " + result;
+                    statusDiv.style.color = "#34d399"; // green
+                } else {
+                    statusDiv.innerText = "❌ " + result;
+                    statusDiv.style.color = "#f87171"; // red
+                }
             } catch (error) {
-                statusDiv.innerText = "Error de red al conectar con el servidor";
-                statusDiv.style.color = "red";
+                statusDiv.innerText = "❌ Error al conectar con el servidor";
+                statusDiv.style.color = "#f87171";
+            } finally {
+                setTimeout(() => { 
+                    btn.disabled = false; 
+                    statusDiv.innerText = ""; 
+                }, 3000); // Limpiar después de 3 segundos
             }
         }
+
+        // -- Lógica de Consola (Server-Sent Events) --
+        const terminal = document.getElementById('terminalOutput');
+        
+        function appendLog(message) {
+            const time = new Date().toLocaleTimeString([], { hour12: false });
+            const line = document.createElement('div');
+            
+            let content = `[${time}] ${message}`;
+            
+            // Aplicar colores básicos a la salida
+            if (message.includes("[+]")) {
+                line.style.color = "#34d399"; // verde
+            } else if (message.includes("[-]")) {
+                line.style.color = "#f87171"; // rojo
+            } else if (message.toLowerCase().includes("error") || message.toLowerCase().includes("falló")) {
+                line.style.color = "#f87171"; // rojo
+            } else {
+                line.style.color = "#e2e8f0"; // gris claro por defecto
+            }
+
+            line.innerText = content;
+            terminal.appendChild(line);
+            
+            // Mantener un máximo de 50 líneas para no sobrecargar el DOM
+            if (terminal.childElementCount > 50) {
+                terminal.removeChild(terminal.firstChild);
+            }
+
+            // Auto-scroll al fondo
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function conectarLogs() {
+            const evtSource = new EventSource('/api/logs');
+
+            evtSource.onmessage = function(event) {
+                appendLog(event.data);
+            };
+
+            evtSource.onerror = function(err) {
+                appendLog("[-] Conexión con el servidor perdida. Reconectando en 5s...");
+                evtSource.close();
+                setTimeout(conectarLogs, 5000);
+            };
+        }
+
+        // Iniciar la conexión cuando carga la página
+        window.addEventListener('load', conectarLogs);
     </script>
 </body>
 </html>
